@@ -1,0 +1,49 @@
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">Mini Word Simulator</h1>
+  <div class="row">
+      <div class="col-lg-4 mb-3">
+          <div class="card">
+              <div class="card-body">
+                  <div class="form-group mb-2">
+                      <label for="colorInput">Text Color:</label>
+                      <input type="text" class="form-control" [(ngModel)]="textColor" (input)="applyStyle()"/>
+                  </div>
+                  <div class="form-group mb-2">
+                      <label for="fontSizeInput">Font Size:</label>
+                      <input type="number" class="form-control" [(ngModel)]="fontSize" (input)="applyStyle()"/>
+                  </div>
+                  <div class="form-group mb-2">
+                      <label for="fontFamilySelect">Font Family:</label>
+                      <select class="form-control" [(ngModel)]="fontFamily" (change)="applyStyle()">
+                          <option value="Arial">Arial</option>
+                          <option value="Times New Roman">Times New Roman</option>
+                          <option value="Verdana">Verdana</option>
+                          <option value="Courier New">Courier New</option>
+                      </select>
+                  </div>
+                  <div class="text-center mt-3">
+                      <button (click)="toggleStyle('bold')" class="btn btn-dark me-2">Bold</button>
+                      <button (click)="toggleStyle('italic')" class="btn btn-dark">Italic</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-8">
+          <div class="form-group mb-2">
+                <label for="titleInput">Article Title:</label>
+                <input type="text" class="form-control" [(ngModel)]="articleTitle"/>
+          </div>
+           
+          <div contenteditable="true"
+               [ngStyle]="textStyle"
+               class="editable-text form-control"
+               [appHighlight]="['Palestine', 'peace', 'free']">
+              Here you can write whatever you like (uncensored).
+          </div>
+      </div>
+  </div>
+   <!-- Publish Button ONLY FOR ADMIN (guard???) -->
+   <div class="d-flex justify-content-center mt-3">
+    <button (click)="publishArticle()" class="btn btn-success">Publish Article</button>
+</div>
+</div>

@@ -1,0 +1,12 @@
+
+
+<button (click)="loadUsers()">Load Users</button>
+
+<input type="text" #searchInput placeholder="Search users..." (input)="searchUser(searchInput.value)">
+
+<ul>
+  <li *ngFor="let user of filteredUsers">
+    {{ user.username }} ({{ user.email }})
+    <button (click)="deleteUser(user.id)">Delete</button>
+  </li>
+</ul>

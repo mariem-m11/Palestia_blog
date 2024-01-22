@@ -1,0 +1,22 @@
+.editable-text {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 10px;
+  min-height: 200px;
+  margin-top: 20px;
+  background-color: #fff;
+}
+
+button {
+  margin-right: 5px;
+  /* Additional styling */
+}
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .editable-text {
+    min-height: 150px;
+  }
+  .button-group {
+    margin-bottom: 1rem;
+  }
+}

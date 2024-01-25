@@ -16,6 +16,11 @@ import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './auth.guard';
 import { UserComponent } from './user/user.component';
 import { RegisterComponent } from './register/register.component';
+import { AccessGuard } from './guards/access.guard';
+import { PalestineMapComponent } from './palestine-map/palestine-map.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ArticleDetailComponent } from './articles/article-detail/article-detail.component';
+import { QuizzTineComponent } from './quizz-tine/quizz-tine.component';
 const routes: Routes = [
   {path: 'cv', children:[
     { path: '', component: CvComponent },
@@ -31,11 +36,15 @@ const routes: Routes = [
   { path: 'card', component: CardComponent},
   //{ path: 'PocAddStudents', component:  },
   { path: 'TaskManager', component: TaskManagerComponent },
-  { path: "word", component: MiniWordComponent },
+  { path: "word", component: MiniWordComponent ,canActivate :[AccessGuard]},
   { path: 'about', component: AboutUsComponent },
   { path: 'articles', component: ArticlesComponent },
+  { path: 'article/:id', component: ArticleDetailComponent },
   {path: 'users', component: UserComponent},
+  { path: 'dashboard', component: DashboardComponent},
+  { path: 'palestine-map', component: PalestineMapComponent},
   {path: 'register', component: RegisterComponent},
+  { path: 'quizz-tine', component: QuizzTineComponent },
     //en cas d'erreur
   {path: '**', component: ErrorComponent },
 ];

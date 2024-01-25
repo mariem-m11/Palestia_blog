@@ -49,7 +49,6 @@ constructor(
 
 //recuperer le login credentials (username et passwor)
     const {username,password} = credentials ;
-
     console.log(credentials);
     //verifier si c est le useer correspopndant
      const utilisateur = await this.UserRepository.createQueryBuilder("User")
@@ -66,11 +65,12 @@ constructor(
     if(hashedPassword === utilisateur.password)
     {
       const payload={
+        id : utilisateur.id,
         username,
         email : utilisateur.email,
         role : utilisateur.role
       }
-      const jwt =await this.jwtService.sign(payload);
+      const jwt =await this.jwtService.sign(payload, {expiresIn:3600});
     // on retourne le token au lieu du données
     return {
       "access_token" : jwt

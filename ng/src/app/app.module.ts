@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -36,6 +35,13 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { ContactComponent } from './contact/contact.component';
 import { UserComponent } from './user/user.component';
+import { RegisterComponent } from './register/register.component';
+import { AccessGuard } from './guards/access.guard';
+import { PalestineMapComponent } from './palestine-map/palestine-map.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { QuizzTineComponent } from './quizz-tine/quizz-tine.component';
+import { FilterPipe } from './pipes/filter.pipe';
+import { ArticleDetailComponent } from './articles/article-detail/article-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +66,12 @@ import { UserComponent } from './user/user.component';
     LogoutComponent,
     ContactComponent,
     UserComponent,
+    RegisterComponent,
+    PalestineMapComponent,
+    DashboardComponent,
+    QuizzTineComponent,
+    FilterPipe,
+    ArticleDetailComponent,
     //EmbaucheComponent,
   ],
   imports: [
@@ -88,7 +100,8 @@ import { UserComponent } from './user/user.component';
   ],
   providers: [
     AuthService,
-    AuthGuard],
+    AuthGuard,
+    AccessGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

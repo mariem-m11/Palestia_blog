@@ -1,5 +1,4 @@
 .home-container {
-  /* background-image: url('../../assets/images/header.png'); */
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -13,8 +12,13 @@
 }
 
 .header-overlay {
-  /* ... */
   background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better readability */
+}
+
+.header-overlay h1 .icon {
+  margin-right: 5px; /* Adjust the margin as needed */
+  width: 12px; /* Adjust the width to make it really small */
+  height: auto;
 }
 
 .site-title {
@@ -43,7 +47,7 @@
 .description:before {
   content: open-quote; /* Adds an opening quotation mark */
   font-size: 4em;
-  color: #6d1313; /* Same color as the text for consistency */
+  color: #283618; /* Same color as the text for consistency */
   position: absolute; /* Position absolutely within the description */
   left: 50%;
   top: 0;
@@ -54,7 +58,7 @@
 .description:after {
   content: close-quote; /* Adds a closing quotation mark */
   font-size: 4em;
-  color: #6d1313;
+  color: #283618;
   position: absolute;
   right: 50%;
   bottom: 0;

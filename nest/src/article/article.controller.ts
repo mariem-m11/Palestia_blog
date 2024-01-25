@@ -18,7 +18,6 @@ export class ArticleController {
     return this.articleService.create(createArticleDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.articleService.getArticles();

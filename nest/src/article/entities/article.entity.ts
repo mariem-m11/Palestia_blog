@@ -10,9 +10,7 @@ export class Article extends TimestampEntities {
     title:string
 @Column()
     description:string
-
-
-
+    
   //relation entre article et interactionarticle
     @OneToMany(() => Interactionarticle, (interaction) => interaction.article)
     interactions: Interactionarticle[];

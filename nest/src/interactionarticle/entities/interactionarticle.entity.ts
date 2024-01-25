@@ -12,23 +12,23 @@ export class Interactionarticle extends TimestampEntities{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: true })
     commentaire: string;
 
     @Column({
         type: 'enum',
         enum: ReactionType,
-        default: ReactionType.LIKE,
+        nullable: true
     })
     reaction: ReactionType;
 
-
+    @Column({ default: 0 })
+    note: number;
     //Relation avec l'article
-
+    
     @ManyToOne(() => Article, article => article.interactions, { eager: true })
     @JoinColumn({ name: 'article_id' })
     article: Article;
-
 
     //Relation avec user
     @ManyToOne(

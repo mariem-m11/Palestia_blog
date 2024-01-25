@@ -1,5 +1,25 @@
-<form (ngSubmit)="onSubmit()">
+
+<!-- <p>contact works!</p> -->
+
+<!-- <form (ngSubmit)="onSubmit()">
   <input type="text" [(ngModel)]="email.subject" name="subject" placeholder="Subject" required>
   <textarea [(ngModel)]="email.content" name="content" placeholder="Content" required></textarea>
   <button type="submit">Send Email</button>
+</form> -->
+
+
+<form id="emailForm">
+  <div class="form-group">
+    <label for="subject">Subject</label>
+    <input type="text" id="subject" name="subject" class="form-control" placeholder="Enter subject" required>
+  </div>
+
+  <div class="form-group">
+    <label for="content">Content</label>
+    <textarea id="content" name="content" class="form-control" rows="4" placeholder="Enter content" required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-danger">Send Email</button>
 </form>
+
+

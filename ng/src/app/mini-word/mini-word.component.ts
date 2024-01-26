@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ArticleService } from '../services/article.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-mini-word',
@@ -18,7 +19,8 @@ articleTitle: any;
 
   constructor(
     private router: Router,
-    private articleService: ArticleService // Inject the ArticleService
+    private articleService: ArticleService, // Inject the ArticleService
+    private toastr : ToastrService,
   ) {}
 
   textStyle: any = {};
@@ -49,14 +51,32 @@ articleTitle: any;
   }
 
   publishArticle(): void {
-    const articleContent = {
-      title: this.articleTitle, // Use the title from the input field
-      content: this.editableText
-    };
+    const articleContent = this.editableText;
+    // Basic Validation ll mini word
+    if (!this.articleTitle.trim()) {
+      this.toastr.error('Please enter a title for the article.');
+      return;
+    }
 
-    this.articleService.postArticle(articleContent.title, articleContent.content).subscribe(() => {
-      // After publishing, redirect to the articles page
-      this.router.navigate(['/articles']); // Replace '/articles' with your actual route
-    });
+    if (!this.editableText || !this.editableText.trim()) {
+      this.toastr.error('Please enter content for the article.');
+      return;
+    }
+
+    // console.log('Content:', this.editableText); // Debugging hehe
+    this.articleService.postArticle(this.articleTitle,articleContent).subscribe(
+      (response) =>{
+        this.toastr.success('Article successfully added');
+        // redirect to the articles page
+        this.router.navigate(['/articles']);
+
+      },
+    (error) =>{
+      this.toastr.error('Error adding article ');
+
+    }
+    )
+
   }
-}
+
+  }

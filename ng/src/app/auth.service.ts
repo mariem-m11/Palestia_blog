@@ -72,6 +72,12 @@ export class AuthService {
         return JSON.parse(atob(token.split('.')[1])) as User;
     }
 
+    getUserbyId(idUser : number):Observable<any>{
+      console.log("ena f getusername")
+       return this.http.get<any>(`${this.apiUrl}/user/${idUser}`);
+     }
+ 
+ 
     getToken() {
     const access_token = localStorage.getItem('access_token');
         if (!access_token) {return '';

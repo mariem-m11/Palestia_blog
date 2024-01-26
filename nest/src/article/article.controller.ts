@@ -12,7 +12,6 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
   //seul l 'admin peut ajouter un article
   @Roles(Role_userEnum.ADMIN)
-  @UseGuards(JwtAuthGuard,RoleGuard)
   @Post('add')
   create(@Body() createArticleDto: AddArticleDto) {
     return this.articleService.create(createArticleDto);

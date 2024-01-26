@@ -23,9 +23,9 @@ export class InteractionarticleController {
     return this.interactionarticleService.getCommentsByArticleId(idArticle);
   }
 
-  @Get('note/:idArticle')
-  getNotes(@Param('idArticle') idArticle: number) {
-    return this.interactionarticleService.getNotesByArticleId(idArticle);
+  @Get('note/:idArticle/:idUser')
+  getNotes(@Param('idArticle') idArticle: number, @Param('idUser') idUser: number,) {
+    return this.interactionarticleService.getNotesByArticleandUser(idArticle, idUser);
   }
 
   @Get('reaction/:idArticle')

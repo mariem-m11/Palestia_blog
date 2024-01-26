@@ -20,6 +20,9 @@ export class DashboardComponent {
   searchText: string = '';
   users: any[] = [];
   filteredUsers: any[] = [];
+  currentPage: number = 1;
+  pageSize: number = 10;
+
 
   constructor(private userService: UserService) { }
   
@@ -55,5 +58,6 @@ export class DashboardComponent {
     this.filteredUsers = this.users.filter(user =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    this.currentPage = 1; // Reset to first page after search
   }
 }

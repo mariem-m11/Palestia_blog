@@ -13,23 +13,22 @@ export class ArticleService {
 
   constructor(private http: HttpClient,private authservice : AuthService) { }
 
-  postArticle(title: string, description: string): Observable<any> {
- const params = new HttpParams().set('access_token',this.authservice.getToken());
-    console.log(params)
-    return this.http.post<any>(this.apiUrl + '/add' , { title, description },{params});
-  }
-
-  getArticles(): Observable<any>{
-    console.log("hahaha")
-    console.log(this.http.get<any>(this.apiUrl))
-    return this.http.get<any>(this.apiUrl);
-  }
-
-  fetchArticleData(articleId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${articleId}`);
-  }
-
-
+  postArticle(titre: string, description: string): Observable<any> {
+    // const params = new HttpParams().set('access_token',this.authservice.getToken());
+    //    console.log(params)
+       return this.http.post<any>(`${this.apiUrl}/add` , { titre, description }); //,{params}
+     }
+   
+     getArticles(): Observable<any>{
+        // console.log("hani fl getarticles m service")
+        // console.log('apiurl:',this.apiUrl)
+       // console.log(this.http.get<any>(`${this.apiUrl}`))
+       return this.http.get<any>(`${this.apiUrl}`);
+     }
+   
+     fetchArticleData(articleId: number): Observable<any> {
+       return this.http.get<any>(`${this.apiUrl}/${articleId}`);
+     }
 
   private  apiUrl2='http://localhost:3000/interactionarticle' ;
 
@@ -43,6 +42,10 @@ export class ArticleService {
 
   addNote(idArticle: number, idVisiteur: number, note: number): Observable<any> {
     return this.http.post(`${this.apiUrl2}/note/${idArticle}/${idVisiteur}`, { note });
+  }
+
+  getNote(idArticle: number, idVisiteur: number): Observable<any> {
+    return this.http.get(`${this.apiUrl2}/note/${idArticle}/${idVisiteur}`);
   }
 
   getComments(articleId : number):Observable<any> {
@@ -60,7 +63,16 @@ export class ArticleService {
   // addcomment(dto: CreateInteractionarticleDto): Observable<any> {
   //   return this.http.post<any>(`${this.apiUrl2}/comment`, dto);
   // }
-  
+
+  DeleteArticle(articleId : number):Observable<any>{
+    console.log(this.http.delete<any>(`${this.apiUrl}/${articleId}`))
+    return this.http.delete<any>(`${this.apiUrl}/${articleId}`);
+  }
+
+  ModifyArticle(articleId : number,title : string , description : string){
+    return this.http.patch<any>(`${this.apiUrl}/${articleId}`,{title, description});
+  }
 
 }
+  
 

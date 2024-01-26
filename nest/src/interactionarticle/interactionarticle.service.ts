@@ -10,6 +10,7 @@ import { ArticleService } from '../article/article.service';
 import { UserService } from '../user/user.service';
 import { ReactionType } from '../enums/reaction-type';
 import { react } from '@babel/types';
+import { ArticleUserDto } from './dto/article-user.dto';
 
 @Injectable()
 export class InteractionarticleService {
@@ -137,25 +138,42 @@ if (existingInteraction) {
 }
 }
   
+  // async getCommentsByArticleId(idArticle: number): Promise<{id: number, commentaire: string}[]> {
+  //   const interactions = await this.InteractionRepository.find({
+  //     where: { article: { id: idArticle }, commentaire: Not(IsNull()) },
+  //     relations: ['article']
+  //   });
+
+  //   if (!interactions) {
+  //     throw new NotFoundException('Comments not found for the article');
+  //   }
+
+  //   return interactions.map(interaction => ({
+  //     id: interaction.id,
+  //     commentaire: interaction.commentaire
+  //   }));
+  // }
+
   async getCommentsByArticleId(idArticle: number): Promise<{id: number, commentaire: string}[]> {
     const interactions = await this.InteractionRepository.find({
       where: { article: { id: idArticle }, commentaire: Not(IsNull()) },
-      relations: ['article']
+      relations: ['article','user']
     });
 
     if (!interactions) {
       throw new NotFoundException('Comments not found for the article');
     }
-
     return interactions.map(interaction => ({
       id: interaction.id,
+      id_user : interaction.user.id,
       commentaire: interaction.commentaire
     }));
   }
+  
+  async getNotesByArticleandUser(idArticle: number , idUser: number): Promise<{ note: number}[]> {
 
-  async getNotesByArticleId(idArticle: number): Promise<{id: number, note: number}[]> {
     const interactions = await this.InteractionRepository.find({
-      where: { article: { id: idArticle }, note: Not(IsNull()) },
+      where: { article: { id: idArticle }, user: {id: idUser} , note: Not(0) },
       relations: ['article']
     });
 
@@ -164,7 +182,6 @@ if (existingInteraction) {
     }
 
     return interactions.map(interaction => ({
-      id: interaction.id,
       note: interaction.note
     }));
   }

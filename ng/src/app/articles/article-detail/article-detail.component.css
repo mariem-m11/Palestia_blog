@@ -4,6 +4,33 @@
   padding: 20px;
 }
 
+
+.star-rating {
+  display: inline-flex;
+}
+
+.star {
+  cursor: pointer;
+  color: gray; /* Default color of stars */
+}
+
+.star.selected {
+  color: gold; /* Color of selected stars */
+}
+
+/* You can add :hover styles if you want to give a visual cue for hover state */
+.star:not(.selected):hover {
+  color: #b4a76c; /* Lighter shade of gold for hover state */
+}
+
+.star.selected i.fa-star {
+  color: yellow; /* or the color you use for selected stars */
+}
+
+.star.grey i.fa-star-o {
+  color: grey;
+}
+
 .card-title {
   color: #333;
 }

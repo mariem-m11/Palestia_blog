@@ -3,32 +3,38 @@
   <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
     <img src="./../../assets/images/dashboard.png" alt="Dash Icon" class="icon mx-auto d-block">
 
-    <!-- User Management Section -->
-    <section class="my-4 user-management">
-      <h2><i class="fas fa-user"></i> User Management </h2>
-      <input type="text" [(ngModel)]="searchText" #searchInput placeholder="Search users..."  class="form-control my-3" (input)="searchUser(searchInput.value)">
-      <table class="table table-hover">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of filteredUsers">
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-              <button class="btn btn-danger" (click)="deleteUser(user.id)">
-                <i class="fas fa-trash-alt"></i> Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+   <!-- User Management Section -->
+<section class="my-4 user-management">
+  <h2><i class="fas fa-user"></i> User Management </h2>
+  <input type="text" [(ngModel)]="searchText" #searchInput placeholder="Search users..." class="form-control my-3" (input)="searchUser(searchInput.value)">
+  <table class="table table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr *ngFor="let user of filteredUsers | slice:(currentPage-1)*pageSize:currentPage*pageSize"> -->
+        <tr *ngFor="let user of filteredUsers | paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
+
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteUser(user.id)">
+            <i class="fas fa-trash-alt"></i> Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Add pagination controls after your table -->
+<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+  <!-- <pagination-controls (pageChange)="currentPage = $event" [totalItems]="filteredUsers.length" [itemsPerPage]="pageSize"></pagination-controls> -->
+</section>
+
 
     <!-- Article Interaction Analytics -->
     <section class="my-4 article-analytics">

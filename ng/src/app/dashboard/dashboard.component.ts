@@ -21,7 +21,8 @@ export class DashboardComponent {
   users: any[] = [];
   filteredUsers: any[] = [];
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 5;
+  pages: number[] = [];
 
 
   constructor(private userService: UserService) { }
@@ -40,12 +41,12 @@ export class DashboardComponent {
     return total ? Math.round((article.dislikes / total) * 100) : 0;
   }
 
-  loadUsers(): void {
-    this.userService.getUsers().subscribe((data: any) => {
-      this.users = data;
-      this.filteredUsers = data;
-    });
-  }
+  // loadUsers(): void {
+  //   this.userService.getUsers().subscribe((data: any) => {
+  //     this.users = data;
+  //     this.filteredUsers = data;
+  //   });
+  // }
 
   deleteUser(id: number): void {
     this.userService.deleteUser(id).subscribe(() => {
@@ -58,6 +59,22 @@ export class DashboardComponent {
     this.filteredUsers = this.users.filter(user =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    this.currentPage = 1; // Reset to first page after search
+  }
+
+  loadUsers(): void {
+    this.userService.getUsers().subscribe((data: any) => {
+      this.users = data;
+      this.filteredUsers = data;
+      this.calculatePages();
+    });
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
+  }
+
+  calculatePages(): void {
+    const totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
+    this.pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 }

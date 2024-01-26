@@ -42,7 +42,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { QuizzTineComponent } from './quizz-tine/quizz-tine.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { ArticleDetailComponent } from './articles/article-detail/article-detail.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -87,7 +86,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     HttpClientModule,
     EmbaucheComponent,
     CvComponent,
-    NgxPaginationModule,
     NgIf,
     CarouselModule.forRoot(),
     ToastrModule.forRoot({

@@ -26,6 +26,10 @@ export class ArticlesComponent implements OnInit {
     './../../assets/images/bg2.jpg',
     // ... other images
   ];
+  currentPage: number = 1;
+  itemsPerPage: number = 4;
+  pages: number[] = [];
+  paginatedArticles: any[] = [];
 
   getImageForArticle(index: number): string {
     return this.staticImages[index % this.staticImages.length];
@@ -35,7 +39,10 @@ export class ArticlesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadArticles()
+    this.calculatePages();
+    this.loadPage(1);
   }
+
 
   
   loadArticles(): void {
@@ -66,6 +73,23 @@ export class ArticlesComponent implements OnInit {
     return firstSentence;
   }
 
+
+  calculatePages(): void {
+    const totalPages = Math.ceil(this.articles.length / this.itemsPerPage);
+    this.pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  loadPage(pageNumber: number): void {
+    const startIndex = (pageNumber - 1) * this.itemsPerPage;
+    this.paginatedArticles = this.articles.slice(startIndex, startIndex + this.itemsPerPage);
+    this.currentPage = pageNumber;
+  }
+
+  changePage(pageNumber: number): void {
+    if (pageNumber >= 1 && pageNumber <= this.pages.length) {
+      this.loadPage(pageNumber);
+    }
+  }
 
 
   

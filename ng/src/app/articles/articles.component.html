@@ -26,4 +26,14 @@
       </div>
     </div>
   </div>
+
+   <!-- Pagination -->
+   <div class="text-center">
+    <ul class="pagination">
+      <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+        <a class="page-link" (click)="changePage(page)"></a>
+      </li>
+    </ul>
+    <p class="total-pages">Page {{ currentPage }} of {{ pages.length }}</p>
+  </div>
 </div>

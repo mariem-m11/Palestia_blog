@@ -107,3 +107,72 @@ body {
   font-size: 1.5rem;
   margin-bottom: 40px;
 }
+
+
+/*pagination*/
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+.page-item {
+  display: inline;
+  margin: 0 2px;
+}
+
+.page-item a {
+  position: relative;
+  float: left;
+  padding: 6px;
+  line-height: 1.42857143;
+  color: #fff;
+  text-decoration: none;
+  background-color: #606C38;
+  border: 1px solid #606C38;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  width: 12px;
+  height: 12px;
+  margin: 0 2px;
+}
+
+.page-item a::before,
+.page-item a::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.page-item a::before {
+  left: -6px;
+}
+
+.page-item a::after {
+  right: -6px;
+}
+
+.page-item.active a {
+  z-index: 2;
+  color: #fff;
+  background-color: #283618;
+}
+
+.page-item.disabled a {
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #eceeef;
+  border-color: #eceeef;
+  color: #6c757d;
+}
+
+.total-pages {
+  color: #283618;
+  margin-top: 10px;
+}

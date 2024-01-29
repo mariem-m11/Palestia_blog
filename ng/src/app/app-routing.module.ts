@@ -21,6 +21,7 @@ import { PalestineMapComponent } from './palestine-map/palestine-map.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ArticleDetailComponent } from './articles/article-detail/article-detail.component';
 import { QuizzTineComponent } from './quizz-tine/quizz-tine.component';
+import { ContactComponent } from './contact/contact.component';
 const routes: Routes = [
   {path: 'cv', children:[
     { path: '', component: CvComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'Login', component: LoginComponent},
   { path: 'Color', component: ColorComponent},
   { path: 'logout', component: LogoutComponent },
+  { path: 'contact', component: ContactComponent },
 
   { path: 'card', component: CardComponent},
   //{ path: 'PocAddStudents', component:  },

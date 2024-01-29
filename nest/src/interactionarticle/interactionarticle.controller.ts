@@ -28,6 +28,12 @@ export class InteractionarticleController {
     return this.interactionarticleService.getNotesByArticleandUser(idArticle, idUser);
   }
 
+
+  @Get('reaction/:idArticle/:idUser')
+  getReaction(@Param('idArticle') idArticle: number, @Param('idUser') idUser: number,) {
+    return this.interactionarticleService.getReactionByArticleandUser(idArticle, idUser);
+  }
+
   @Get('reaction/:idArticle')
   getReactions(@Param('idArticle') idArticle: number) {
     return this.interactionarticleService.getReactionsByArticleId(idArticle);

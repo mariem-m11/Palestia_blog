@@ -271,6 +271,7 @@ getComments() {
 
   if (articleIdParam) {
     this.comments =[];
+    console.log("im in get comments")
     this.articleService.getComments(+articleIdParam).subscribe(
       (data) => {
         // Start processing comments sequentially

@@ -13,23 +13,23 @@ export class ArticleService {
 
   constructor(private http: HttpClient,private authservice : AuthService) { }
 
-  postArticle(titre: string, description: string): Observable<any> {
-    // const params = new HttpParams().set('access_token',this.authservice.getToken());
-    //    console.log(params)
-       return this.http.post<any>(`${this.apiUrl}/add` , { titre, description }); //,{params}
-     }
-   
-     getArticles(): Observable<any>{
-        // console.log("hani fl getarticles m service")
-        // console.log('apiurl:',this.apiUrl)
-       // console.log(this.http.get<any>(`${this.apiUrl}`))
-       return this.http.get<any>(`${this.apiUrl}`);
-     }
-   
-     fetchArticleData(articleId: number): Observable<any> {
-       return this.http.get<any>(`${this.apiUrl}/${articleId}`);
-     }
-
+  postArticle(title: string, description: string): Observable<any> {
+      // const params = new HttpParams().set('access_token',this.authservice.getToken());
+      //    console.log(params)
+         return this.http.post<any>(`${this.apiUrl}/add` , { title, description }); //,{params}
+  }
+     
+  getArticles(): Observable<any>{
+          // console.log("hani fl getarticles m service")
+          // console.log('apiurl:',this.apiUrl)
+         console.log( "hdha howa", this.http.get<any>(`${this.apiUrl}`))
+         return this.http.get<any>(`${this.apiUrl}`);
+  }
+     
+  fetchArticleData(articleId: number): Observable<any> {
+         return this.http.get<any>(`${this.apiUrl}/${articleId}`);
+  }
+     
   private  apiUrl2='http://localhost:3000/interactionarticle' ;
 
   addLike(idArticle: number, idVisiteur: number): Observable<any> {
@@ -42,6 +42,25 @@ export class ArticleService {
 
   addNote(idArticle: number, idVisiteur: number, note: number): Observable<any> {
     return this.http.post(`${this.apiUrl2}/note/${idArticle}/${idVisiteur}`, { note });
+  }
+
+
+  //nestakhdmouh bch nekhdho mlawl amehi li tkoun selectionné 
+  getReaction(idArticle: number, idVisiteur: number): Observable<any> {
+    return this.http.get(`${this.apiUrl2}/reaction/${idArticle}`);
+  } 
+
+  getNoteGenerale(idArticle: number): Observable<any> {
+    return this.http.get(`${this.apiUrl2}/general/${idArticle}`);
+  }
+
+
+  getLikes(idArticle: number): Observable<any> {
+    return this.http.get(`${this.apiUrl2}/likes/${idArticle}`);
+  }
+
+  getDislikes(idArticle: number): Observable<any> {
+    return this.http.get(`${this.apiUrl2}/dislikes/${idArticle}`);
   }
 
   getNote(idArticle: number, idVisiteur: number): Observable<any> {

@@ -46,3 +46,27 @@ canvas {
 .progress-bar.dislike {
   background-color: #f44336; /* Red for dislikes */
 }
+
+.stars {
+  color: gold;
+}
+.fa-star, .fa-star-o {
+  margin-right: 2px;
+}
+
+.stars {
+  color: gold;
+}
+.fa-star, .fa-star-o {
+  margin-right: 2px;
+}
+
+
+.star {
+  cursor: pointer;
+  color: gray; /* Default color of stars */
+}
+
+.star.selected {
+  color: gold; /* Color of selected stars */
+}

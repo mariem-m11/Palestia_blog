@@ -42,6 +42,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { QuizzTineComponent } from './quizz-tine/quizz-tine.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { ArticleDetailComponent } from './articles/article-detail/article-detail.component';
+import { MailService } from './services/mail.service';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -100,9 +102,11 @@ import { ArticleDetailComponent } from './articles/article-detail/article-detail
 
   ],
   providers: [
+    MailService,
     AuthService,
     AuthGuard,
-    AccessGuard],
+    AccessGuard,
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

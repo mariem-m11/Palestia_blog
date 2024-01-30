@@ -5,8 +5,11 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 import { ReactionType } from '../../enums/reaction-type';
 import { AuthService } from '../../auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Reaction } from '../../Model/reaction';
+
 import { Subscription } from 'rxjs';
 import {CommentService} from "../../services/comment.service";
+
 
 @Component({
     selector: 'app-article-detail',
@@ -21,6 +24,11 @@ export class ArticleDetailComponent implements OnInit {
     selectedRating: number = 0;
     isModifying = false; // Boolean variable to track whether modification mode is active
     commentsToShow :number =3 ;
+    likesCount! : number  ;
+
+    hasLiked: boolean = false;
+    hasDisliked: boolean = false;
+
      private streamSubscription!: Subscription;
 
     
@@ -28,12 +36,10 @@ export class ArticleDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private articleService: ArticleService,
         private router: Router,
-        private authService : AuthService,
+        public authService : AuthService,
         private toastr : ToastrService,
 
-    ) {
-      // const idVisiteur = this.authService.getUserId();
-    }
+    ) {}
 
 
     ngOnInit(): void {
@@ -46,7 +52,15 @@ export class ArticleDetailComponent implements OnInit {
             const user = this.authService.getUser(this.authService.getToken())
             //console.log(this.authService.getToken());
             
+            
+            ////////////////NOTE//////////////////
             if(user && articleIdParam){
+
+
+              this.checkUserReaction(articleId, user.id);
+              console.log("nedit ccheck reaction")
+
+
              const idUser = user.id ;
              //console.log(idUser);
              console.log(+articleIdParam);
@@ -62,6 +76,8 @@ export class ArticleDetailComponent implements OnInit {
                   this.selectedRating = 0;
               }
           );
+            ////////////////COMMENTS//////////////////
+
             this.articleService.getComments(articleId);
             this.articleService.fetchArticleData(articleId).subscribe(
                 (data) => {
@@ -93,37 +109,9 @@ export class ArticleDetailComponent implements OnInit {
       this.article.dislikes++;
   }
 
+  
 
-    addComment(): void {
-      //console.log("ena l comment",this.newComment)
-      const articleIdParam = this.route.snapshot.paramMap.get('id');
-      const user = this.authService.getUser(this.authService.getToken())
-      if(user && articleIdParam){
-       const idUser = user.id ;
-
-      //  console.log("ena l id hehe",idUser);
-      //  console.log(this.authService.getToken());
-      //  console.log(user);
-      //  console.log('content',this.newComment)
-        this.articleService.addcomment(this.newComment,+articleIdParam,+idUser).subscribe(
-          (response) =>{
-            this.toastr.success("commentaire ajouté avec succès");
-
-          },
-          (error)=>{
-            this.toastr.error("Erreur lors de l'ajout");
-          }
-        );
-      }
-
-      this.newComment = '';
-
-    }
-
-    
-
-
-    toggleLike() {
+  toggleLike() {
     const articleIdParam = this.route.snapshot.paramMap.get('id');
     const user = this.authService.getUser(this.authService.getToken())
     //console.log("user",user?.id)
@@ -146,35 +134,213 @@ export class ArticleDetailComponent implements OnInit {
       }
     }
 
+  //   checkUserReaction(articleId: number, userId: number) {
+  //     this.articleService.getReaction(articleId, userId).subscribe(
+  //         (reaction) => {
+  //           console.log("reaction ahiiiiii", reaction)
 
+
+  //             if (reaction.likeStatus === 'like') {
+  //                 this.hasLiked = true;
+  //             } else if (reaction.likeStatus === 'dislike') {
+  //                 this.hasDisliked = true;
+  //             }
+  //         },
+  //         (error) => {
+  //             console.error('Error fetching reaction:', error);
+  //         }
+  //     );
+  // }
+  
+  
+  // checkUserReaction(articleId: number, userId: number) {
+  //   this.articleService.getReaction(articleId, userId).subscribe(
+  //     (reactions: Reaction[]) => {
+  //       console.log("reactions", reactions);
+  //       // Check if the reactions array is empty
+  //       if (!reactions.length) {
+  //         this.hasLiked = false;
+  //         this.hasDisliked = false;
+  //       } else {
+  //         // Get the last reaction, which represents the current state
+  //         const latestReaction = reactions[reactions.length - 1];
+  //         console.log(latestReaction)
+  
+  //         // Determine the state based on the latest reaction
+  //         switch (latestReaction.reaction) {
+  //           case 'like':
+  //             this.toggleLikeState(true);
+  //             console.log("aamel like")
+  //             break;
+  //           case 'dislike':
+  //             this.toggleLikeState(false, true);
+  //             console.log("aamel dislike")
+
+  //             break;
+  //           default:
+  //             // Handle any other unexpected case
+  //             this.hasLiked = false;
+  //             this.hasDisliked = false;
+  //             break;
+  //         }
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching reaction:', error);
+  //     }
+  //   );
+  // }
+  
+  
+  checkUserReaction(articleId: number, userId: number) {
+    this.articleService.getReaction(articleId, userId).subscribe(
+      (reactions: Reaction[]) => {
+        if (!reactions.length) {
+          this.hasLiked = false;
+          this.hasDisliked = false;
+          return;
+        }
+        // Get the last reaction which represents the current state
+        const latestReaction = reactions[reactions.length - 1];
+        if (latestReaction.reaction === 'like') {
+          this.toggleLike1();  // Call without triggering API call
+        } else if (latestReaction.reaction === 'dislike') {
+          this.toggleDislike();  // Call without triggering API call
+        }
+      },
+      (error) => {
+        console.error('Error fetching reaction:', error);
+      }
+    );
+  }
+  
+  toggleLikeState(isLiked: boolean, isDisliked: boolean = false) {
+    // Set the state based on the parameters
+    this.hasLiked = isLiked;
+    this.hasDisliked = isDisliked;
+    // Update the article's liked and disliked properties
+    this.article.liked = this.hasLiked;
+    this.article.disliked = this.hasDisliked;
+  }
+
+  
+
+    toggleLike1() {
+      const articleIdParam = this.route.snapshot.paramMap.get('id');
+      const user = this.authService.getUser(this.authService.getToken());
+
+      if (user && articleIdParam) {
+          const idUser = user.id;
+
+          // Utilisez la fonction addLike pour ajouter le like
+          this.articleService.addLike(+articleIdParam, +idUser).subscribe(
+              () => {
+                  //  obtenir le nombre de likes mis à jour
+                  this.articleService.getLikes(+articleIdParam).subscribe(
+                      (likesCount) => {
+                          console.log('Likes count after like added:', likesCount);
+
+                          // Mettez à jour les compteurs de likes et dislikes
+                          if (!this.article.liked) {
+                              this.article.likes = likesCount;
+                              if (this.article.disliked) {
+                                  this.article.dislikes--;
+                              }
+                          } else {
+                              // Si déjà liké, le nouveau like est en réalité un dislike
+                              this.article.likes--;
+                          }
+
+                          // Inversez le statut liked/disliked
+                          this.article.liked = !this.article.liked;
+                          this.article.disliked = this.article.liked ? false : this.article.disliked;
+
+                      },
+                      (error) => {
+                          console.error('Erreur lors de la demande de likes après ajout :', error);
+                      }
+                  );
+              },
+              (error) => {
+                  console.error('Erreur lors de l\'ajout de like :', error);
+              }
+          );
+
+          this.toggleLikeState(!this.hasLiked);
+        }
+  }
+    
     toggleDislike() {
       const articleIdParam = this.route.snapshot.paramMap.get('id');
-      const user = this.authService.getUser(this.authService.getToken())
-      //console.log("user",user?.id)
-      if(user && articleIdParam){
-       const idUser = user.id ;
-       //console.log("ena l id hehe",idUser)
-       this.articleService.adddisLike(+articleIdParam, +idUser).subscribe(
-        (response) => {
-       if (!this.article.disliked) {
-          this.article.dislikes++;
-          if (this.article.liked) {
-            this.article.likes--;
-          }
-        } else {
-          this.article.dislikes--;
+      const user = this.authService.getUser(this.authService.getToken());
+
+      if (user && articleIdParam) {
+          const idUser = user.id;
+
+          // Utilisez la fonction adddisLike pour ajouter le dislike
+          this.articleService.adddisLike(+articleIdParam, +idUser).subscribe(
+              (response) => {
+                  // obtenir le nombre de likes mis à jour
+                  this.articleService.getDislikes(+articleIdParam).subscribe(
+                      (dislikesCount) => {
+                          console.log('Likes count after dislike added:', dislikesCount);
+
+                          // Mettez à jour les compteurs de likes et dislikes
+                          if (!this.article.disliked) {
+                              this.article.dislikes = dislikesCount;
+                              if (this.article.liked) {
+                                  this.article.likes--;
+                              }
+                          } else {
+                              // Si déjà disliké, le nouveau dislike est en réalité un like
+                              this.article.dislikes--;
+                          }
+
+                          // Inversez le statut liked/disliked
+                          this.article.disliked = !this.article.disliked;
+                          this.article.liked = this.article.disliked ? false : this.article.liked;
+                      },
+                      (error) => {
+                          console.error('Erreur lors de la demande de likes après ajout de dislike:', error);
+                      }
+                  );
+              }
+          );
+          this.toggleLikeState(this.hasLiked, !this.hasDisliked);
         }
-        this.article.disliked = !this.article.disliked;
-        this.article.liked = this.article.disliked ? false : this.article.liked;
-      });
-    }
-    }
+  }
+
 
   updateUserRating(): void {
       // Update the user's rating
       this.article.userRating = this.userRating;
   }
 
+  addComment(): void {
+    //console.log("ena l comment",this.newComment)
+    const articleIdParam = this.route.snapshot.paramMap.get('id');
+    const user = this.authService.getUser(this.authService.getToken())
+    if(user && articleIdParam){
+     const idUser = user.id ;
+
+    //  console.log("ena l id hehe",idUser);
+    //  console.log(this.authService.getToken());
+    //  console.log(user);
+    //  console.log('content',this.newComment)
+      this.articleService.addcomment(this.newComment,+articleIdParam,+idUser).subscribe(
+        (response) =>{
+          this.toastr.success("commentaire ajouté avec succès");
+          this.getComments()
+        },
+        (error)=>{
+          this.toastr.error("Erreur lors de l'ajout");
+        }
+      );
+    }
+
+    this.newComment = '';
+
+  }
 
   setRating(rating: number): void {
     const articleIdParam = this.route.snapshot.paramMap.get('id');
@@ -285,33 +451,65 @@ getComments() {
   }
 }
 
+// processCommentsOnebyOne(data: any[], index: number) {
+//   if (index < data.length) {
+//     const comment = data[index];
+//     console.log('hdha user', comment.id_user)
+
+//     // Call the service to get the user by ID
+//     this.authService.getUserbyId(comment.id_user).subscribe(
+//       (userResponse) => {
+//         // Find the user object from the response
+//         const user = userResponse.find((u: { id: any; }) => u.id === comment.id_user);
+//         console.log('hdha user', user)
+//         // If user is found, prepare the comment text with the username
+//         if (user && user.username) {
+//           const commentText = `${user.username}: ${comment.commentaire}`;
+//           this.comments.unshift(commentText);
+//         } else {
+//           // Handle the case where user is not found or username is not available
+//           this.toastr.error("User not found or username is missing");
+//         }
+
+//         // Process the next comment regardless of success or failure
+//         this.processCommentsOnebyOne(data, index + 1);
+//       },
+//       (error) => {
+//         // Handle the error scenario
+//         console.error(error);
+//         this.toastr.error("Error getting user details");
+//         this.processCommentsOnebyOne(data, index + 1);
+//       }
+//     );
+//   } else {
+//     // All comments processed
+//     // Additional actions if needed after processing all comments
+//   }
+// }
+
+
 processCommentsOnebyOne(data: any[], index: number) {
   if (index < data.length) {
     const comment = data[index];
-    console.log('hdha user', comment.id_user)
-
-    // Call the service to get the user by ID
+    console.log("ena id taa user ",comment.id_user);
     this.authService.getUserbyId(comment.id_user).subscribe(
-      (userResponse) => {
-        // Find the user object from the response
-        const user = userResponse.find((u: { id: any; }) => u.id === comment.id_user);
-        console.log('hdha user', user)
-        // If user is found, prepare the comment text with the username
-        if (user && user.username) {
-          const commentText = `${user.username}: ${comment.commentaire}`;
-          this.comments.unshift(commentText);
-        } else {
-          // Handle the case where user is not found or username is not available
-          this.toastr.error("User not found or username is missing");
-        }
+      (response) => {
+        //amalna -1 khater tab fih decalage taa id donc na9sou 1 bch njiw bethabt
+        //response[0] atana l usrname taa id 1
 
-        // Process the next comment regardless of success or failure
+        const username = response[(comment.id_user)].username;
+        //const username = response[7].username ;
+        console.log("salut username",username)
+        const commentText = ` ${username} :  ${comment.commentaire}`;
+        this.comments.unshift(commentText);
+
+        // Process the next comment
         this.processCommentsOnebyOne(data, index + 1);
       },
       (error) => {
-        // Handle the error scenario
-        console.error(error);
-        this.toastr.error("Error getting user details");
+        this.toastr.error("Erreur getting comments");
+
+        // Skip to the next comment even if there's an error
         this.processCommentsOnebyOne(data, index + 1);
       }
     );

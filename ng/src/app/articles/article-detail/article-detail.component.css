@@ -9,23 +9,6 @@
   display: inline-flex;
 }
 
-/* .star {
-  cursor: pointer;
-  color: gray; /* Default color of stars */
-/* } */ */
-
-/* .star.selected {
-  color: gold; /* Color of selected stars */
-/* }
-
-.star.unselected {
-  color: gray; /* Color of selected stars */
-/* }  */ */
-
-/* .star.grey i.fa-star-o {
-  color: grey;
-} */
-
 
 .star:not(.selected):hover {
   color: black; /* Lighter shade of gold for hover state */
@@ -40,18 +23,6 @@
 .card-title {
   color: #333;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .card-text {
@@ -106,10 +77,9 @@ textarea {
 }
 
 
-/* Add this to your component's CSS or global styles */
 .star-rating {
   font-size: 1.5rem;
-  color: #ffc107; /* Set the star color */
+  color: #ffc107; 
 }
 
 .star {
@@ -118,13 +88,17 @@ textarea {
 }
 
 .fa-star {
-  color: #ffc107; /* Set the filled star color */
+  color: gray; 
 }
 
 .fa-star-o {
-  color: #ccc; /* Set the unfilled star color */
+  color: gray; 
 }
 
 .locked .fa-star {
   cursor: not-allowed;
 }
+
+
+
+

@@ -1,6 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { articles } from './../Model/articles-data';
+import { ArticleService } from '../services/article.service';
+import { AuthService } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { Article } from '../Model/articles';
+
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
@@ -22,22 +26,73 @@ export class ArticlesComponent implements OnInit {
   itemsPerPage: number = 6;
   pages: number[] = [];
   paginatedArticles: any[] = [];
+  articles:any[] = [];
+  filteredArticles:any[] = [...this.articles];
 
   getImageForArticle(index: number): string {
     return this.staticImages[index % this.staticImages.length];
   }
 
 
-  constructor(private router: Router) { }
-  articles = articles;  // Assign the imported articles array
+  constructor(private router: Router, private articleService: ArticleService,private toastr : ToastrService,public authservice : AuthService) {
+
+  }
   ngOnInit(): void {
+    this.loadArticles();
     this.calculatePages();
     this.loadPage(1);
   }
 
-  viewArticleDetail(articleId: number): void {
-    this.router.navigate(['/article', articleId]);
+
+  // loadArticles(): void {
+  //   console.log("salem ml load")
+  //   this.articleService.getArticles().subscribe(
+  //       (data: any) => {
+  //         this.articles = data;
+  //         console.log(data)
+  //       },
+  //       (error) => {
+  //         console.error('Error loading articles', error);
+  //         this.toastr.error("Error loading articles")
+  //       }
+  //   );
+  // }
+  
+  
+  loadArticles(): void {
+    this.articleService.getArticles().subscribe((articles: Article[]) => {
+      this.articles = articles;
+      this.filteredArticles = articles;
+      this.calculatePages(); // Corrected method name
+    });
   }
+
+  searchArticles(searchTerm: string): void {
+    this.filteredArticles = this.articles.filter(article =>
+      article.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+
+  showCard = false;
+
+
+
+  viewArticleDetail(articleId: number): void {
+
+    if(this.authservice.isAuthenticated() ){
+      this.router.navigate(['/article', articleId]);
+
+    }else{
+      this.showCard = !this.showCard;
+      this.router.navigate(['/read-more'])
+    }
+  }
+
+
+  // viewArticleDetail(articleId: number): void {
+  //   this.router.navigate(['/article', articleId]);
+  // }
 
   getSummary(content: string): string {
     const firstSentence = content.split(/(?<=[.?!])\s/, 1)[0];
@@ -55,11 +110,33 @@ export class ArticlesComponent implements OnInit {
     this.currentPage = pageNumber;
   }
 
+
+
   changePage(pageNumber: number): void {
     if (pageNumber >= 1 && pageNumber <= this.pages.length) {
       this.loadPage(pageNumber);
     }
   }
+
+ redirectToReadMore() {
+  // Check if the user is a visitor or not admin and not abonne
+  const isAdmin = this.authservice.isAdmin()
+  const isAbonne = this.authservice.getUser(this.authservice.getToken())?.role
+
+  if ( !isAdmin && !isAbonne) {
+    // Navigate to the ReadMoreComponent
+    this.router.navigate(['/register']);
+  } else {
+    this.router.navigate(['/home'])
+  }
+ }
+
+ redirectToLogin(){
+  this.router.navigate(['/Login']);
+
+}
+
+
 
 }
 

@@ -45,10 +45,18 @@ export class ArticleService {
   }
 
 
+
+
+
+
   //nestakhdmouh bch nekhdho mlawl amehi li tkoun selectionné 
   getReaction(idArticle: number, idVisiteur: number): Observable<any> {
-    return this.http.get(`${this.apiUrl2}/reaction/${idArticle}`);
+    return this.http.get(`${this.apiUrl2}/reaction/${idArticle}/${idVisiteur}`);
   } 
+
+
+
+
 
   getNoteGenerale(idArticle: number): Observable<any> {
     return this.http.get(`${this.apiUrl2}/general/${idArticle}`);

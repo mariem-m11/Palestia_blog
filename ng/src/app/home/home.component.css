@@ -231,3 +231,21 @@
   background-color: #555;
 }
 
+
+/*Contact*/
+
+.contact-button {
+  display: block;
+  margin: 20px auto; 
+  padding: 15px 25px;
+  background-color: #8b2727; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em; 
+}
+
+.contact-button:hover {
+  background-color: #6d1313;
+}

@@ -75,4 +75,9 @@ export class HomeComponent  {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+
+  openContactUs(): void {
+    this.toastr.info('Redirecting to Contact ...');
+    this.router.navigate(['/contact']);
+  }
 }
